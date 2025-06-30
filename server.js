@@ -3,10 +3,6 @@ dotenv.config({ path: "./config.env" });
 const app = require("./app");
 const mongoose = require("mongoose");
 
-app.use("/", (req, res) => {
-  console.log("iuktavufyatf iaufa iufga ifug aiut");
-  res.send("<h1>Hello World!!!!!!</h1>");
-});
 
 // Database Connection
 mongoose
