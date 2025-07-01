@@ -1,6 +1,8 @@
+const { token } = require("morgan");
 const User = require("../Models/userModel");
 const { validateData } = require("../utils/validation");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.signUp = async (req, res) => {
   try {
@@ -37,26 +39,42 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("body: ", req.body);
 
     const user = await User.findOne({ email: email });
     if (!user) {
       throw new Error("No user found ");
     }
-    console.log("User : ", user);
+
     const hashingPass = await bcrypt.compare(password, user.password);
-    console.log("hashingPass", hashingPass);
 
     if (!hashingPass) {
       throw new Error(
         "Opps the entered password is incorrect, please login with valid credentials"
       );
     }
+
+    const token = await jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
+    console.log("token :", token);
+
+    res.cookie("token", token);
     res.send("loggedin");
   } catch (err) {
     res.status(400).send({
       message: err.message,
     });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    const user = req.user;
+    console.log(user);
+
+    res.send(user);
+  } catch (err) {
+    console.log(err.message);
+
+    res.status(400).send(err.message);
   }
 };
 
