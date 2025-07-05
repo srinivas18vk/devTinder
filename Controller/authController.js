@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
     const token = await user.getJWT();
     // const token = await jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
     res.cookie("token", token);
-    res.send("User logged-in Successfully");
+    res.send(user.firstName + " logged-in Successfully");
   } catch (err) {
     res.status(400).send({
       message: err.message,

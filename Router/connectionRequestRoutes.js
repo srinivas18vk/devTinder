@@ -9,4 +9,10 @@ router.post(
   connectionRequestController.sendConnectionRrequest
 );
 
+router.post(
+  "/review/:status/:toUserId",
+  authorize,
+  connectionRequestController.reviewConnectionRequest
+);
+
 module.exports = router;

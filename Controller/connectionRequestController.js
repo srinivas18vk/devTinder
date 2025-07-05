@@ -56,3 +56,36 @@ exports.sendConnectionRrequest = async (req, res) => {
     });
   }
 };
+
+exports.reviewConnectionRequest = async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+    const { status, toUserId } = req.params;
+
+    isAllowedStatus = ["accepted", "rejected"];
+    if (!isAllowedStatus.includes(status)) {
+      throw new Error("Invalid status found");
+    }
+
+    const connectionRequest = await ConnectionRequest.findOne({
+      fromUserId: toUserId,
+      toUserId: loggedInUser,
+      status: "interested",
+    });
+
+    if (!connectionRequest) {
+      throw new Error("Connection request not found");
+    }
+    const { firstName } = await User.findById(toUserId);
+    connectionRequest.status = status;
+    const data = await connectionRequest.save();
+
+    res.status(200).json({
+      message: `Connection request from ${firstName} has been ${status}`,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
+    });
+  }
+};
