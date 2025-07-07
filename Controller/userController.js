@@ -3,6 +3,7 @@ const User = require("../Models/userModel");
 const { validateData, validateEditData } = require("../utils/validation");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const ConnectionRequest = require("../Models/connectionRequestModel");
 
 exports.getProfile = async (req, res) => {
   try {
@@ -13,6 +14,35 @@ exports.getProfile = async (req, res) => {
     console.log(err.message);
 
     res.status(400).send(err.message);
+  }
+};
+
+exports.getRequestReceived = async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+    const isconnection = await ConnectionRequest.find({
+      toUserId: loggedInUser._id,
+      status: "interested",
+    }).populate("fromUserId", "firstName lastName age skill");
+
+    const data = isconnection.map((el) => {
+      return el.fromUserId;
+    });
+
+    if (!isconnection) {
+      throw new Error(
+        "Ooops seems like no connection requests available for you"
+      );
+    }
+
+    res.status(200).json({
+      message: "Here are your Connection requests received",
+      data: data,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
+    });
   }
 };
 

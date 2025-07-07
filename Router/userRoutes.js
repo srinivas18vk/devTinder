@@ -7,6 +7,9 @@ const { authorize } = require("../Middleware/auth");
 // router.post("/login", userController.login);
 
 router.route("/user").get(userController.getAllUser);
+router
+  .route("/user/requests/received")
+  .get(authorize, userController.getRequestReceived);
 
 router.get("/getProfile", authorize, userController.getProfile);
 router.patch("/editProfile", authorize, userController.editUser);
