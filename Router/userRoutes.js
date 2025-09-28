@@ -5,8 +5,12 @@ const { authorize } = require("../Middleware/auth");
 
 // router.post("/signUp", userController.signUp);
 // router.post("/login", userController.login);
+console.log("uygsuydtasgfu6asftaus6fsu6");
 
 router.route("/user").get(userController.getAllUser);
+router
+  .route("/user/getConnections")
+  .get(authorize, userController.getConnections);
 router
   .route("/user/requests/received")
   .get(authorize, userController.getRequestReceived);

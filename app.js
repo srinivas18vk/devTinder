@@ -14,8 +14,9 @@ app.use(cookieparser());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+      ///api/v1/users/user/getConnections
 app.use("/api/v1/request/", connectionRequestRouter);
-
+       
 // app.all("*", (req, res, next) => {
 //   res.status(404).json({
 //     status: false,

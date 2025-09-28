@@ -46,6 +46,41 @@ exports.getRequestReceived = async (req, res) => {
   }
 };
 
+// GET: /user/connections
+exports.getConnections = async (req, res) => {
+  try {
+    console.log("kfygsfjyg");
+
+    const loggeedInUser = req.user;
+
+    const connections = await ConnectionRequest.find({
+      $or: [
+        { toUserId: loggeedInUser._id, status: "accepted" },
+        { fromUserId: loggeedInUser._id, status: "accepted" },
+      ],
+    }).populate("fromUserId", "firstName lastName age skill");
+
+    if (!connections) {
+      throw new Error("you donot have any connections yet");
+    }
+    const data = connections.map((el) => {
+      if (el.fromUserId._id.toString() === loggeedInUser._id.toString()) {
+        return el.toUserId;
+      }
+      return el.fromUserId;
+    });
+    res.status(200).json({
+      message: "Here are your connections",
+      data: data,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
+      stack: err.stack,
+    });
+  }
+};
+
 exports.getOneUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);

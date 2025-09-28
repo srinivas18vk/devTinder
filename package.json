@@ -1,0 +1,26 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "a tinder clone App",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/srinivas18vk/devTinder.git"
+  },
+  "author": "Srinivas K",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.6.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.1",
+    "morgan": "^1.10.0",
+    "validator": "^13.15.15"
+  }
+}
